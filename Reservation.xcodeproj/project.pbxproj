@@ -7,15 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED2B56761E1398BA00F666A9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2B56751E1398BA00F666A9 /* MapKit.framework */; };
+		ED7B2CD11E10FC4000B0D531 /* ReservationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7B2CD01E10FC4000B0D531 /* ReservationTableViewController.swift */; };
+		ED7B2CD81E1124E300B0D531 /* BranchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7B2CD71E1124E300B0D531 /* BranchTableViewCell.swift */; };
+		ED7B2CDA1E11356B00B0D531 /* NewBranchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7B2CD91E11356B00B0D531 /* NewBranchViewController.swift */; };
+		ED7B2CDC1E11F0CE00B0D531 /* AddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7B2CDB1E11F0CE00B0D531 /* AddressViewController.swift */; };
+		ED7B2CE11E126BFB00B0D531 /* LocationSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7B2CE01E126BFB00B0D531 /* LocationSearchTableViewController.swift */; };
 		EDCB29161E0CB67A00950195 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCB29151E0CB67A00950195 /* AppDelegate.swift */; };
 		EDCB29181E0CB67A00950195 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCB29171E0CB67A00950195 /* ViewController.swift */; };
-		EDCB291B1E0CB67A00950195 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDCB29191E0CB67A00950195 /* Main.storyboard */; };
+		EDCB291B1E0CB67A00950195 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDCB29191E0CB67A00950195 /* Main.storyboard */; settings = {ASSET_TAGS = (2000, ); }; };
 		EDCB291E1E0CB67A00950195 /* Reservation.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EDCB291C1E0CB67A00950195 /* Reservation.xcdatamodeld */; };
 		EDCB29201E0CB67A00950195 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDCB291F1E0CB67A00950195 /* Assets.xcassets */; };
 		EDCB29231E0CB67A00950195 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDCB29211E0CB67A00950195 /* LaunchScreen.storyboard */; };
+		EDCB29351E0CC17F00950195 /* BranchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCB29341E0CC17F00950195 /* BranchViewController.swift */; };
+		EDCB29381E0CC47E00950195 /* NewReservationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCB29371E0CC47E00950195 /* NewReservationViewController.swift */; };
+		EDCB29481E0CF0B500950195 /* ReservationDatePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCB29451E0CF0B500950195 /* ReservationDatePickerTableViewCell.swift */; };
+		EDCB29491E0CF0B500950195 /* ReservationDateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCB29461E0CF0B500950195 /* ReservationDateTableViewCell.swift */; };
+		EDCB294A1E0CF0B500950195 /* ReservationTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCB29471E0CF0B500950195 /* ReservationTextTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		ED2B56751E1398BA00F666A9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		ED7B2CD01E10FC4000B0D531 /* ReservationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReservationTableViewController.swift; sourceTree = "<group>"; };
+		ED7B2CD71E1124E300B0D531 /* BranchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BranchTableViewCell.swift; sourceTree = "<group>"; };
+		ED7B2CD91E11356B00B0D531 /* NewBranchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewBranchViewController.swift; sourceTree = "<group>"; };
+		ED7B2CDB1E11F0CE00B0D531 /* AddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressViewController.swift; sourceTree = "<group>"; };
+		ED7B2CE01E126BFB00B0D531 /* LocationSearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchTableViewController.swift; sourceTree = "<group>"; };
 		EDCB29121E0CB67A00950195 /* Reservation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reservation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDCB29151E0CB67A00950195 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EDCB29171E0CB67A00950195 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -24,6 +41,11 @@
 		EDCB291F1E0CB67A00950195 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDCB29221E0CB67A00950195 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EDCB29241E0CB67A00950195 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EDCB29341E0CC17F00950195 /* BranchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BranchViewController.swift; sourceTree = "<group>"; };
+		EDCB29371E0CC47E00950195 /* NewReservationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewReservationViewController.swift; sourceTree = "<group>"; };
+		EDCB29451E0CF0B500950195 /* ReservationDatePickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReservationDatePickerTableViewCell.swift; sourceTree = "<group>"; };
+		EDCB29461E0CF0B500950195 /* ReservationDateTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReservationDateTableViewCell.swift; sourceTree = "<group>"; };
+		EDCB29471E0CF0B500950195 /* ReservationTextTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReservationTextTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +53,49 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED2B56761E1398BA00F666A9 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		ED2B56741E1398BA00F666A9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ED2B56751E1398BA00F666A9 /* MapKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ED7B2CD21E10FDAD00B0D531 /* Reservations */ = {
+			isa = PBXGroup;
+			children = (
+				EDCB29371E0CC47E00950195 /* NewReservationViewController.swift */,
+				EDCB29451E0CF0B500950195 /* ReservationDatePickerTableViewCell.swift */,
+				EDCB29461E0CF0B500950195 /* ReservationDateTableViewCell.swift */,
+				EDCB29471E0CF0B500950195 /* ReservationTextTableViewCell.swift */,
+				ED7B2CD01E10FC4000B0D531 /* ReservationTableViewController.swift */,
+			);
+			name = Reservations;
+			sourceTree = "<group>";
+		};
+		ED7B2CDD1E11F0DC00B0D531 /* New Branch */ = {
+			isa = PBXGroup;
+			children = (
+				ED7B2CD91E11356B00B0D531 /* NewBranchViewController.swift */,
+				ED7B2CDB1E11F0CE00B0D531 /* AddressViewController.swift */,
+				ED7B2CE01E126BFB00B0D531 /* LocationSearchTableViewController.swift */,
+			);
+			name = "New Branch";
+			sourceTree = "<group>";
+		};
 		EDCB29091E0CB67900950195 = {
 			isa = PBXGroup;
 			children = (
 				EDCB29141E0CB67A00950195 /* Reservation */,
 				EDCB29131E0CB67A00950195 /* Products */,
+				ED2B56741E1398BA00F666A9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +110,35 @@
 		EDCB29141E0CB67A00950195 /* Reservation */ = {
 			isa = PBXGroup;
 			children = (
+				EDCB29361E0CC46200950195 /* Branches */,
 				EDCB29151E0CB67A00950195 /* AppDelegate.swift */,
 				EDCB29171E0CB67A00950195 /* ViewController.swift */,
-				EDCB29191E0CB67A00950195 /* Main.storyboard */,
+				EDCB292A1E0CBC6D00950195 /* Storyboards */,
 				EDCB291F1E0CB67A00950195 /* Assets.xcassets */,
-				EDCB29211E0CB67A00950195 /* LaunchScreen.storyboard */,
 				EDCB29241E0CB67A00950195 /* Info.plist */,
 				EDCB291C1E0CB67A00950195 /* Reservation.xcdatamodeld */,
 			);
 			path = Reservation;
+			sourceTree = "<group>";
+		};
+		EDCB292A1E0CBC6D00950195 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				EDCB29191E0CB67A00950195 /* Main.storyboard */,
+				EDCB29211E0CB67A00950195 /* LaunchScreen.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
+		EDCB29361E0CC46200950195 /* Branches */ = {
+			isa = PBXGroup;
+			children = (
+				EDCB29341E0CC17F00950195 /* BranchViewController.swift */,
+				ED7B2CD71E1124E300B0D531 /* BranchTableViewCell.swift */,
+				ED7B2CDD1E11F0DC00B0D531 /* New Branch */,
+				ED7B2CD21E10FDAD00B0D531 /* Reservations */,
+			);
+			name = Branches;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -93,6 +167,9 @@
 		EDCB290A1E0CB67900950195 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					2000,
+				);
 				LastSwiftUpdateCheck = 0820;
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = skon;
@@ -100,10 +177,15 @@
 					EDCB29111E0CB67900950195 = {
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
-			buildConfigurationList = EDCB290D1E0CB67900950195 /* Build configuration list for PBXProject "Reservation" */;
+			buildConfigurationList = EDCB290D1E0CB67900950195 /* Build configuration list for PBXProject "Reservation 2" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -139,8 +221,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED7B2CE11E126BFB00B0D531 /* LocationSearchTableViewController.swift in Sources */,
+				EDCB294A1E0CF0B500950195 /* ReservationTextTableViewCell.swift in Sources */,
+				EDCB29491E0CF0B500950195 /* ReservationDateTableViewCell.swift in Sources */,
+				EDCB29381E0CC47E00950195 /* NewReservationViewController.swift in Sources */,
+				ED7B2CDC1E11F0CE00B0D531 /* AddressViewController.swift in Sources */,
+				ED7B2CD81E1124E300B0D531 /* BranchTableViewCell.swift in Sources */,
+				EDCB29481E0CF0B500950195 /* ReservationDatePickerTableViewCell.swift in Sources */,
 				EDCB29181E0CB67A00950195 /* ViewController.swift in Sources */,
+				ED7B2CD11E10FC4000B0D531 /* ReservationTableViewController.swift in Sources */,
 				EDCB29161E0CB67A00950195 /* AppDelegate.swift in Sources */,
+				EDCB29351E0CC17F00950195 /* BranchViewController.swift in Sources */,
+				ED7B2CDA1E11356B00B0D531 /* NewBranchViewController.swift in Sources */,
 				EDCB291E1E0CB67A00950195 /* Reservation.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -269,6 +361,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.skon.Reservation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -281,13 +374,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.skon.Reservation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EDCB290D1E0CB67900950195 /* Build configuration list for PBXProject "Reservation" */ = {
+		EDCB290D1E0CB67900950195 /* Build configuration list for PBXProject "Reservation 2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EDCB29251E0CB67A00950195 /* Debug */,
@@ -303,6 +397,7 @@
 				EDCB29291E0CB67A00950195 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
