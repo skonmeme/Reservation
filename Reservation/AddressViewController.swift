@@ -122,4 +122,21 @@ class AddressViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         self.searchController.searchBar.text = placemark.pseudoAddress
     }
     
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "Pointed")
+        annotationView.isDraggable    = true
+        annotationView.isEnabled      = true
+        annotationView.canShowCallout = true
+        annotationView.animatesDrop   = true
+        return annotationView
+    }
+
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
+        print(view.annotation?.title)
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        print("merong")
+    }
+    
 }
