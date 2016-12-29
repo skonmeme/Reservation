@@ -45,6 +45,17 @@ class NewBranchViewController: UIViewController, UITextFieldDelegate, UIImagePic
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func activateSaveWhenAllTextFieldFilled() {
+        guard let name = self.nameTextField.text, let phone = self.phoneTextField.text, let address = self.addressTextField.text else {
+            self.saveButton.isEnabled = false
+            return
+        }
+        
+        if name != "" && phone != "" && address != "" {
+            self.saveButton.isEnabled = true
+        }
+    }
 
     @IBAction func searchAddress(_ sender: Any) {
     }
@@ -71,9 +82,22 @@ class NewBranchViewController: UIViewController, UITextFieldDelegate, UIImagePic
         branch.setValue(self.addressTextField.text, forKey: "address")
         
         if let image = self.photoView.image, let imageData = UIImagePNGRepresentation(image) {
-            let filename = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(self.nameTextField.text!.replacingOccurrences(of: " ", with: "_") + ".png")
-            try? imageData.write(to: filename, options: .atomic)
-            branch.setValue(filename, forKey: "photo")
+            var photoName: String
+            var photoURL:  URL
+            let photoDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            repeat {
+                photoName = UUID().uuidString + ".png"
+                photoURL  = photoDirectory.appendingPathComponent(photoName)
+            } while (FileManager.default.fileExists(atPath: photoURL.absoluteString))
+            do {
+                try imageData.write(to: photoURL, options: .atomic)
+                branch.setValue(photoName, forKey: "photo")
+                if FileManager.default.fileExists(atPath: photoURL.absoluteString) {
+                    print("merong")
+                }
+            } catch let error as NSError {
+                print("Could not save an image. \(error), \(error.userInfo)")
+            }
         }
         
         do {
@@ -107,15 +131,7 @@ class NewBranchViewController: UIViewController, UITextFieldDelegate, UIImagePic
         if textField.tag == 2000 {
             self.searchAddressButton.isHidden = true
         }
-
-        guard let name = self.nameTextField.text, let phone = self.phoneTextField.text, let address = self.addressTextField.text else {
-            self.saveButton.isEnabled = false
-            return
-        }
-        
-        if name != "" && phone != "" && address != "" {
-            self.saveButton.isEnabled = true
-        }
+        self.activateSaveWhenAllTextFieldFilled()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -128,6 +144,7 @@ class NewBranchViewController: UIViewController, UITextFieldDelegate, UIImagePic
     }
     
     func addressSearched(_ addressViewController: AddressViewController, address: String) {
-        
+        self.addressTextField.text = address
+        self.activateSaveWhenAllTextFieldFilled()
     }
 }

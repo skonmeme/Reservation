@@ -10,8 +10,11 @@ import UIKit
 import CoreData
 
 class BranchViewController: UITableViewController {
+    
+    var managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
-    var branches: [Branch] = []
+    var branches       = [Branch]()
+    var branchHeights  = [CGFloat]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,15 +25,12 @@ class BranchViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        
-        let managedContext  = appDelegate.persistentContainer.viewContext
         let fetchRequest    = NSFetchRequest<NSManagedObject>(entityName: "Branch")
         let branchSort      = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [branchSort]
         
         do {
-            branches = try managedContext.fetch(fetchRequest) as! [Branch]
+            branches = try self.managedContext.fetch(fetchRequest) as! [Branch]
             self.tableView.reloadData()
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
@@ -41,16 +41,6 @@ class BranchViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     // TableView DataSource
     
@@ -59,20 +49,82 @@ class BranchViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // reset heights
+        branchHeights = [CGFloat](repeating: UITableViewAutomaticDimension, count: branches.count)
         return branches.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "BranchCell", for: indexPath)
-        cell.textLabel?.text       = branches[indexPath.row].name
-        cell.detailTextLabel?.text = "\(branches[indexPath.row].address) (\(branches[indexPath.row].phone))"
-        if let photo = branches[indexPath.row].photo {
-            cell.imageView?.image      = UIImage(contentsOfFile: photo)
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "BranchCell", for: indexPath) as! BranchTableViewCell
+
+        cell.nameLabel?.text = branches[indexPath.row].name
+        if let address = branches[indexPath.row].address, let phone = branches[indexPath.row].phone {
+            cell.addressLabel?.text = "\(address)\n☎︎ \(phone)"
         }
+        cell.addressLabel?.lineBreakMode = .byWordWrapping
+        cell.addressLabel?.numberOfLines = 0
+        if let photoName = branches[indexPath.row].photo {
+            let photoURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(photoName)
+            print(photoURL)
+            print(photoURL.absoluteString)
+            cell.photoView?.image = UIImage(contentsOfFile: photoURL.absoluteString)
+        }
+        if let reservations = branches[indexPath.row].reservations {
+            cell.numberOfReservationsLabel.text = String(reservations.count)
+        } else {
+            cell.numberOfReservationsLabel.text = "0"
+        }
+        
+        // Calculate a height of cell
+        if let nameLabel = cell.nameLabel, let textString = cell.nameLabel?.text, let addressString = cell.addressLabel?.text {
+            print(cell.frame.width)
+            print(nameLabel.frame.width)
+            // height with virtical space (4)
+            let height = textString.heightWithConstrainedWidth(width: nameLabel.frame.width, font: UIFont.systemFont(ofSize: 18)) + addressString.heightWithConstrainedWidth(width: nameLabel.frame.width, font: UIFont.systemFont(ofSize: 10)) + 4
+            if height > 44 {
+                self.branchHeights[indexPath.row] = height
+            }
+            print(height)
+        }
+        
+        // multi-lines
+        cell.setNeedsUpdateConstraints()
+        cell.updateConstraintsIfNeeded()
+        
         return cell
     }
     
-    // Segue
+    // TableView Delegate
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+         return self.branchHeights[indexPath.row]
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete", handler: {
+            (action, indexPath) in
+            do {
+                let branch = self.branches[indexPath.row]
+                self.branches.remove(at: indexPath.row)
+                self.managedContext.delete(branch)
+                try self.managedContext.save()
+                self.tableView.reloadData()
+            } catch let error {
+                print("Cannot remove object. \(error)")
+            }
+        })
+        return [deleteAction]
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return .delete
+    }
+    
+    // Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     }

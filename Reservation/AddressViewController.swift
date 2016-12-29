@@ -14,7 +14,7 @@ protocol LocationSearchTableViewControllerDelegate {
     func locationSearchDidSelected(_ locationSearchTableViewController: LocationSearchTableViewController, placemark: MKPlacemark)
 }
 
-extension MKPlacemark {
+extension CLPlacemark {
     var pseudoAddress: String? {
         get {
             return (self.addressDictionary?[AnyHashable("FormattedAddressLines")] as? [String])?.joined(separator: ", ") ?? ""
@@ -128,15 +128,31 @@ class AddressViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         annotationView.isEnabled      = true
         annotationView.canShowCallout = true
         annotationView.animatesDrop   = true
+        annotationView.tag            = 3000
         return annotationView
     }
 
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
-        print(view.annotation?.title)
-    }
-    
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        print("merong")
+        guard let annotation = view.annotation else { return }
+        
+        if newState == .ending {
+            CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude), completionHandler: {
+                (placemarks, error) in
+                guard let placemarks = placemarks else {
+                    print("Reverse geocoder failed with error: " + (error?.localizedDescription ?? ""))
+                    return
+                }
+                if placemarks.count > 0 {
+                    let placemark = placemarks[0]
+                    self.searchController.searchBar.text = placemark.pseudoAddress
+                    let annotationView = self.mapView.viewWithTag(3000) as! MKAnnotationView
+                    if let annotation = annotationView.annotation as? MKPointAnnotation {
+                        annotation.title      = placemark.name
+                        annotation.subtitle   = placemark.pseudoAddress
+                    }
+                }
+            })
+        }
     }
     
 }

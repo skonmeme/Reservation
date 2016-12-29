@@ -10,6 +10,11 @@ import UIKit
 
 class BranchTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var numberOfReservationsLabel: UILabel!
+    @IBOutlet weak var photoView: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
