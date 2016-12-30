@@ -34,7 +34,7 @@ class BranchViewController: UITableViewController {
             self.tableView.reloadData()
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
-        }
+        }        
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,9 +65,7 @@ class BranchViewController: UITableViewController {
         cell.addressLabel?.numberOfLines = 0
         if let photoName = branches[indexPath.row].photo {
             let photoURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(photoName)
-            print(photoURL)
-            print(photoURL.absoluteString)
-            cell.photoView?.image = UIImage(contentsOfFile: photoURL.absoluteString)
+            cell.photoView?.image = UIImage(contentsOfFile: photoURL.path)
         }
         if let reservations = branches[indexPath.row].reservations {
             cell.numberOfReservationsLabel.text = String(reservations.count)
@@ -77,14 +75,11 @@ class BranchViewController: UITableViewController {
         
         // Calculate a height of cell
         if let nameLabel = cell.nameLabel, let textString = cell.nameLabel?.text, let addressString = cell.addressLabel?.text {
-            print(cell.frame.width)
-            print(nameLabel.frame.width)
             // height with virtical space (4)
             let height = textString.heightWithConstrainedWidth(width: nameLabel.frame.width, font: UIFont.systemFont(ofSize: 18)) + addressString.heightWithConstrainedWidth(width: nameLabel.frame.width, font: UIFont.systemFont(ofSize: 10)) + 4
             if height > 44 {
                 self.branchHeights[indexPath.row] = height
             }
-            print(height)
         }
         
         // multi-lines
@@ -109,6 +104,14 @@ class BranchViewController: UITableViewController {
             (action, indexPath) in
             do {
                 let branch = self.branches[indexPath.row]
+                if let photoName = branch.photo {
+                    let photoURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(photoName)
+                    do {
+                        try FileManager.default.removeItem(at: photoURL)
+                    } catch let error {
+                        print("Cannot remove file: \(error)")
+                    }
+                }
                 self.branches.remove(at: indexPath.row)
                 self.managedContext.delete(branch)
                 try self.managedContext.save()
@@ -118,10 +121,6 @@ class BranchViewController: UITableViewController {
             }
         })
         return [deleteAction]
-    }
-    
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        return .delete
     }
     
     // Navigation

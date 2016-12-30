@@ -88,16 +88,10 @@ class NewBranchViewController: UIViewController, UITextFieldDelegate, UIImagePic
             repeat {
                 photoName = UUID().uuidString + ".png"
                 photoURL  = photoDirectory.appendingPathComponent(photoName)
-            } while (FileManager.default.fileExists(atPath: photoURL.absoluteString))
-            do {
-                try imageData.write(to: photoURL, options: .atomic)
-                branch.setValue(photoName, forKey: "photo")
-                if FileManager.default.fileExists(atPath: photoURL.absoluteString) {
-                    print("merong")
-                }
-            } catch let error as NSError {
-                print("Could not save an image. \(error), \(error.userInfo)")
-            }
+            } while (FileManager.default.fileExists(atPath: photoURL.path))
+
+            FileManager.default.createFile(atPath: photoURL.path, contents: imageData, attributes: nil)
+            branch.setValue(photoName, forKey: "photo")
         }
         
         do {
