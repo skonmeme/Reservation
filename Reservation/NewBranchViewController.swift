@@ -26,6 +26,7 @@ class NewBranchViewController: UIViewController, UITextFieldDelegate, UIImagePic
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.nameTextField.becomeFirstResponder()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +55,8 @@ class NewBranchViewController: UIViewController, UITextFieldDelegate, UIImagePic
         
         if name != "" && phone != "" && address != "" {
             self.saveButton.isEnabled = true
+        } else {
+            self.saveButton.isEnabled = false
         }
     }
 
@@ -115,7 +118,6 @@ class NewBranchViewController: UIViewController, UITextFieldDelegate, UIImagePic
     // TextField Delegate
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        print(textField.tag)
         if textField.tag == 2000 {
             self.searchAddressButton.isHidden = false
         }
@@ -128,6 +130,28 @@ class NewBranchViewController: UIViewController, UITextFieldDelegate, UIImagePic
         self.activateSaveWhenAllTextFieldFilled()
     }
     
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard var text = textField.text else { return false }
+        
+        if let range = text.range(from: range) {
+            text = text.replacingCharacters(in: range, with: string)
+            textField.text = text
+        }
+        
+        self.activateSaveWhenAllTextFieldFilled()
+        
+        return false
+    }
+
+    // AddressView Delegate
+    
+    func addressSearched(_ addressViewController: AddressViewController, address: String) {
+        self.addressTextField.text = address
+        self.activateSaveWhenAllTextFieldFilled()
+    }
+
+    // Segue
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let naviagationController = segue.destination as! UINavigationController
         let destinationViewController = naviagationController.viewControllers.first as! AddressViewController
@@ -137,8 +161,4 @@ class NewBranchViewController: UIViewController, UITextFieldDelegate, UIImagePic
         }
     }
     
-    func addressSearched(_ addressViewController: AddressViewController, address: String) {
-        self.addressTextField.text = address
-        self.activateSaveWhenAllTextFieldFilled()
-    }
 }

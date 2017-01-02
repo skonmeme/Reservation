@@ -18,18 +18,23 @@ class NewReservationViewController: UITableViewController, UITextFieldDelegate {
     var fromDate = Date()
     var toDate   = Date(timeInterval: 600, since: Date())
     
+    var contentViewResizeRequired = true
+    
     @IBOutlet weak var addButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // Header
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44))
         headerView.backgroundColor = UIColor.groupTableViewBackground
         self.tableView.tableHeaderView = headerView
+        
+        // Footer
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44))
         footerView.backgroundColor = UIColor.groupTableViewBackground
         self.tableView.tableFooterView = footerView
+        self.contentViewResizeRequired = true
     }
     
     override func didReceiveMemoryWarning() {
@@ -63,24 +68,10 @@ class NewReservationViewController: UITableViewController, UITextFieldDelegate {
             self.tableView.beginUpdates()
             self.tableView.reloadRows(at: [IndexPath(row: id + 1, section: 0)], with: .top)
             self.tableView.deselectRow(at: IndexPath(row: id, section: 0), animated: true)
-            self.tableView.sectionFooterHeight = 216
             self.tableView.endUpdates()
         }
     }
     
-    func footerSizeToFit() {
-        let requiredHeight = self.view.frame.height - self.tableView.contentSize.height
-        let footerView: UIView
-        // footer with header and navigation bar
-        if requiredHeight > 44 * 2 + 20 {
-            footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: requiredHeight - (44 + 20)))
-        } else {
-            footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44))
-        }
-        footerView.backgroundColor = UIColor.groupTableViewBackground
-        self.tableView.tableFooterView = footerView
-    }
-
     @IBAction func cancelReservation(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -214,21 +205,52 @@ class NewReservationViewController: UITableViewController, UITextFieldDelegate {
             self.addButton.isEnabled = false
         }
     }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard var text = textField.text else { return false }
+        
+        if let range = text.range(from: range) {
+            text = text.replacingCharacters(in: range, with: string)
+            textField.text = text
+        }
+
+        if textField.tag == 1001 {
+            self.reserver = text
+        } else if textField.tag == 1002 {
+            self.phone = text
+        }
+        
+        if self.reserver != "" && self.phone != "" {
+            self.addButton.isEnabled = true
+        } else {
+            self.addButton.isEnabled = false
+        }
+
+        return false
+    }
     
     override func viewDidLayoutSubviews() {
         let baseHeight: CGFloat = 44
+        let navigationHeight    = self.tableView.contentInset.top
         
         if let footerView = self.tableView.tableFooterView {
-            print("\(self.view.frame.height) - \(self.tableView.contentSize.height)")
-            let requiredHeight = self.view.frame.height - self.tableView.contentSize.height
+            // View size - (Content Size - Footer View Size)
+            let requiredHeight = self.view.frame.height - (self.tableView.contentSize.height - footerView.frame.height)
             var frame = footerView.frame
-            // footer with header and navigation bar
-            if requiredHeight > baseHeight * 2 + 20 {
-                frame.size.height = requiredHeight - (baseHeight + 20)
+            if requiredHeight > baseHeight + navigationHeight {
+                frame.size.height = requiredHeight - navigationHeight
             } else {
                 frame.size.height = baseHeight
             }
             self.tableView.tableFooterView?.frame = frame
+
+            // readjust ContentView frame (tricky)
+            if self.contentViewResizeRequired {
+                self.tableView.tableFooterView = self.tableView.tableFooterView
+                self.contentViewResizeRequired = false
+            } else {
+                self.contentViewResizeRequired = true
+            }
         }
     }
     
