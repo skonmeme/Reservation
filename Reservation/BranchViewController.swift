@@ -10,9 +10,10 @@ import UIKit
 import CoreData
 
 class BranchViewController: UITableViewController {
+
+    var selectedRow    = Int()
     
     var managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
     var branches       = [Branch]()
     var branchHeights  = [CGFloat]()
     
@@ -25,16 +26,16 @@ class BranchViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let fetchRequest    = NSFetchRequest<NSManagedObject>(entityName: "Branch")
-        let branchSort      = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [branchSort]
+        let fetchRequest         = NSFetchRequest<NSFetchRequestResult>(entityName: "Branch")
+        let branchSortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [branchSortDescriptor]
         
         do {
             branches = try self.managedContext.fetch(fetchRequest) as! [Branch]
             self.tableView.reloadData()
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
-        }        
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -123,9 +124,17 @@ class BranchViewController: UITableViewController {
         return [deleteAction]
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.selectedRow = indexPath.row
+    }
+    
     // Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ReservationSegue" {
+            let destination = segue.destination as! ReservationTableViewController
+            destination.branch = branches[selectedRow]
+        }
     }
 
 }

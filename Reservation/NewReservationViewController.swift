@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 class NewReservationViewController: UITableViewController, UITextFieldDelegate {
-        
+    
     let rowsOfDate = ["From": 3, "To": 5]
     var rowOfDatePicker = -1
     var reserver = String()
@@ -27,13 +27,16 @@ class NewReservationViewController: UITableViewController, UITextFieldDelegate {
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44))
         headerView.backgroundColor = UIColor.groupTableViewBackground
         self.tableView.tableHeaderView = headerView
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44))
+        footerView.backgroundColor = UIColor.groupTableViewBackground
+        self.tableView.tableFooterView = footerView
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     /*
     // MARK: - Navigation
 
@@ -60,8 +63,22 @@ class NewReservationViewController: UITableViewController, UITextFieldDelegate {
             self.tableView.beginUpdates()
             self.tableView.reloadRows(at: [IndexPath(row: id + 1, section: 0)], with: .top)
             self.tableView.deselectRow(at: IndexPath(row: id, section: 0), animated: true)
+            self.tableView.sectionFooterHeight = 216
             self.tableView.endUpdates()
         }
+    }
+    
+    func footerSizeToFit() {
+        let requiredHeight = self.view.frame.height - self.tableView.contentSize.height
+        let footerView: UIView
+        // footer with header and navigation bar
+        if requiredHeight > 44 * 2 + 20 {
+            footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: requiredHeight - (44 + 20)))
+        } else {
+            footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44))
+        }
+        footerView.backgroundColor = UIColor.groupTableViewBackground
+        self.tableView.tableFooterView = footerView
     }
 
     @IBAction func cancelReservation(_ sender: Any) {
@@ -199,17 +216,20 @@ class NewReservationViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func viewDidLayoutSubviews() {
-        let requiredHeight = self.view.frame.height - self.tableView.contentSize.height
-        let footerView: UIView
-        // footer with header and navigation bar
-        if requiredHeight > 44 * 2 + 20 {
-            footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: requiredHeight - (44 + 20)))
-        } else {
-            footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44))
+        let baseHeight: CGFloat = 44
+        
+        if let footerView = self.tableView.tableFooterView {
+            print("\(self.view.frame.height) - \(self.tableView.contentSize.height)")
+            let requiredHeight = self.view.frame.height - self.tableView.contentSize.height
+            var frame = footerView.frame
+            // footer with header and navigation bar
+            if requiredHeight > baseHeight * 2 + 20 {
+                frame.size.height = requiredHeight - (baseHeight + 20)
+            } else {
+                frame.size.height = baseHeight
+            }
+            self.tableView.tableFooterView?.frame = frame
         }
-        footerView.backgroundColor = UIColor.groupTableViewBackground
-        self.tableView.tableFooterView = footerView
     }
-    
     
 }
