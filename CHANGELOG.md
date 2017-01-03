@@ -2,6 +2,22 @@
 # Reservation 0.1: intro
 ---
 
+###### 2017. 1.3
+
+BranchViewController:
+
+* delegate didSelectRowAt is called after delegate prepare:forSegue is called. In prepare:forSugue, selected row should be obtained by calling indexPathForSelectedRow.
+
+ReservationTableViewController:
+
+* optional output was corrected.
+* two section for upcomming and old reservations is prepared.
+* branch is transferred to NewReservationViewController to keep hierarchical Branch-Reservations structure.
+
+NewReservationViewController:
+
+* new reservation has been saved in CoreData when save button is clicked.
+
 ###### 2017. 1. 2.
 
 String:

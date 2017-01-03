@@ -11,8 +11,6 @@ import CoreData
 
 class BranchViewController: UITableViewController {
 
-    var selectedRow    = Int()
-    
     var managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var branches       = [Branch]()
     var branchHeights  = [CGFloat]()
@@ -124,16 +122,12 @@ class BranchViewController: UITableViewController {
         return [deleteAction]
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.selectedRow = indexPath.row
-    }
-    
     // Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ReservationSegue" {
+        if segue.identifier == "ReservationSegue", let indexPath = self.tableView.indexPathForSelectedRow {
             let destination = segue.destination as! ReservationTableViewController
-            destination.branch = branches[selectedRow]
+            destination.branch = branches[indexPath.row]
         }
     }
 

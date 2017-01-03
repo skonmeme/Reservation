@@ -11,12 +11,14 @@ import CoreData
 
 class NewReservationViewController: UITableViewController, UITextFieldDelegate {
     
+    var branch: Branch?
+    
     let rowsOfDate = ["From": 3, "To": 5]
     var rowOfDatePicker = -1
     var reserver = String()
     var phone    = String()
     var fromDate = Date()
-    var toDate   = Date(timeInterval: 600, since: Date())
+    var toDate   = Date(timeInterval: 3600, since: Date())
     
     var contentViewResizeRequired = true
     
@@ -77,7 +79,27 @@ class NewReservationViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @IBAction func addReservation(_ sender: Any) {
-        self.dismiss(animated: true, completion: { print("merong") })
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let entity         = NSEntityDescription.entity(forEntityName: "Reservation", in: managedContext)
+        let reservation    = NSManagedObject(entity: entity!, insertInto: managedContext)
+        
+        reservation.setValue(self.reserver, forKey: "reserver")
+        reservation.setValue(self.phone,    forKey: "phone")
+        reservation.setValue(self.fromDate, forKey: "from")
+        reservation.setValue(self.toDate,   forKey: "to")
+        reservation.setValue(self.branch,   forKey: "branch")
+
+        do {
+            try managedContext.save()
+            self.dismiss(animated: true)
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+            let alertController = UIAlertController(title: "Could not save.", message: "\(error), \(error.userInfo)", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alertController, animated: true)
+        }
     }
 
     
@@ -114,11 +136,7 @@ class NewReservationViewController: UITableViewController, UITextFieldDelegate {
             }
         }
     }
-    
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        print("DidDeselect: " + String(indexPath.row))
-    }
-    
+        
     // TableView DataSource
     
     override func numberOfSections(in tableView: UITableView) -> Int {

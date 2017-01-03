@@ -79,10 +79,47 @@ class ReservationTableViewController: UITableViewController {
             reservation = oldReservations[indexPath.row]
         }
         
-        cell.textLabel?.text       = "\(reservation.from) - \(reservation.to)"
-        cell.detailTextLabel?.text = "\(reservation.reserver) (\(reservation.phone))"
+        if let from = reservation.from, let to = reservation.to, let reserver = reservation.reserver, let phone = reservation.phone {
+            cell.textLabel?.text       = "\(from) - \(to)"
+            cell.detailTextLabel?.text = "\(reserver) (\(phone))"
+        }
         
         return cell
+    }
+    
+    // Table View Delegate
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 && self.reservations.count > 0 {
+            return "Upcoming reservations"
+        }
+        if section == 1 && self.oldReservations.count > 0 {
+            return "Old reservations"
+        }
+        return nil
+    }
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if section == 1, self.reservations.count == 0 {
+            return nil
+        }
+        return UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44))
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 1, self.reservations.count == 0 {
+            return 0
+        }
+        return 44
+    }
+    
+    // Segue
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let navigationController = segue.destination as! UINavigationController
+        let destination = (navigationController).viewControllers[0] as! NewReservationViewController
+
+        destination.branch = self.branch
     }
 
 }
